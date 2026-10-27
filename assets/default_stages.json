@@ -1,0 +1,57 @@
+{
+  "_comment": "Default removal stages, in order; list stages first. Each removed company is credited to the FIRST stage that removes it. 'list' stages are excluded by passing the held companies' websites back to Prospeo. 'range' stages are counted with intersection searches inside the set the list stages leave, so a company with no data for a filter is never removed by it; the engine builds each range stage's 'data' search (the same filter over its full range) itself. Values checked against Prospeo's filters documentation (saved 23 Oct 2026).",
+  "stages": [
+    {
+      "id": "layoffs",
+      "kind": "list",
+      "reason": "matched Prospeo's \"Layoffs & Restructuring\" news category, last 90 days",
+      "held": {
+        "company_news": {
+          "categories": [
+            "Layoffs & Restructuring"
+          ],
+          "timeframe_days": 90
+        }
+      }
+    },
+    {
+      "id": "sales_leader_departed",
+      "kind": "list",
+      "reason": "matched Prospeo's CRO / VP of Sales / any C-level departure events, last 90 days",
+      "held": {
+        "company_key_execs": {
+          "event_types": [
+            "CRO Departed",
+            "VP of Sales Departed",
+            "Any C-Level Departed"
+          ],
+          "timeframe_days": 90
+        }
+      }
+    },
+    {
+      "id": "headcount_down",
+      "kind": "range",
+      "reason": "Prospeo headcount growth of -10% or lower over 6 months",
+      "held": {
+        "company_headcount_growth": {
+          "timeframe_month": 6,
+          "max": -10
+        }
+      }
+    },
+    {
+      "id": "traffic_down",
+      "kind": "range",
+      "reason": "Prospeo website visits change of -20% or lower, quarterly",
+      "held": {
+        "company_website_traffic": {
+          "visit_change": {
+            "period": "quarterly",
+            "max_change": -20
+          }
+        }
+      }
+    }
+  ]
+}
